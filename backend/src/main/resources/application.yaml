@@ -1,10 +1,5 @@
 spring:
   application:
     name: backend
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: photograph
-      username: test
-      password: 1234
+server:
+  port: 8088
