@@ -4,7 +4,6 @@ import com.photograph.backend.member.domain.Member
 import com.photograph.backend.member.repository.MemberRepository
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class MemberService(
@@ -14,7 +13,6 @@ class MemberService(
         val member = Member(
             username = oAuth2User.attributes["name"] as String,
             email = oAuth2User.attributes["email"] as String,
-            registerDate = LocalDateTime.now()
         )
         return memberRepository.save(member)
     }
