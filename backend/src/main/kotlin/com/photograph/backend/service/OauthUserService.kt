@@ -18,7 +18,6 @@ class OauthUserService(
         val oAuth2User: OAuth2User = delegate.loadUser(userRequest)
         val member = memberService.merge(oAuth2User)
         return memberService.findMemberRolesById(member.memberId)
-            .map { it.authority.name }
-            .let { MemberDetails(member, it, oAuth2User.attributes) }
+            .run { MemberDetails(member, this, oAuth2User.attributes) }
     }
 }

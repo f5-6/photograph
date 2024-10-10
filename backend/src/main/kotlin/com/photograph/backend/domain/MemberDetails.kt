@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User
 
 data class MemberDetails(
     val member: Member,
-    val role: List<String>,
+    val role: List<MemberAuthority>,
     val authAttributes: MutableMap<String, Any>
 ) : OAuth2User {
 
@@ -13,7 +13,6 @@ data class MemberDetails(
 
     override fun getAttributes(): MutableMap<String, Any> = authAttributes
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> =
-        role.map { GrantedAuthority { it } }.toMutableList()
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> = role.toMutableList()
 
 }
