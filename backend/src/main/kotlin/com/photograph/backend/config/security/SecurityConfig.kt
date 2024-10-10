@@ -1,6 +1,6 @@
-package com.photograph.backend.config
+package com.photograph.backend.config.security
 
-import com.photograph.backend.service.OauthUserService
+import com.photograph.backend.config.security.service.OauthUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

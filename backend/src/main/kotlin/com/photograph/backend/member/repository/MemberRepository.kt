@@ -1,6 +1,6 @@
-package com.photograph.backend.repository
+package com.photograph.backend.member.repository
 
-import com.photograph.backend.domain.Member
+import com.photograph.backend.member.domain.Member
 import org.springframework.stereotype.Repository
 
 interface MemberRepository {
