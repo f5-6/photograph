@@ -3,7 +3,3 @@ spring:
     name: backend
 server:
   port: 8088
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
