@@ -1,6 +1,5 @@
 package com.photograph.backend.controller
 
-import com.photograph.backend.domain.Member
 import com.photograph.backend.domain.MemberDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
