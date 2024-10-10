@@ -1,12 +1,15 @@
 package com.photograph.backend.config
 
+import com.photograph.backend.service.OauthUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
-class SecurityConfig {
+class SecurityConfig(
+    private val oauthUserService: OauthUserService
+) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -21,6 +24,9 @@ class SecurityConfig {
                 oauth2Login
                     .defaultSuccessUrl("/") // 로그인 성공 시 리다이렉트될 URL
                     .failureUrl("/login?error=true") // 로그인 실패 시 리다이렉트될 URL
+                    .userInfoEndpoint {
+                        it.userService(oauthUserService) // 사용자 정보를 가져오는 서비스
+                    }
             }
 
         return http.build()
