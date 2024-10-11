@@ -14,6 +14,8 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain =
         http.csrf { it.disable() } // CSRF 보호 비활성화
+            .formLogin { it.disable() } // 폼 로그인 비활성화
+            .httpBasic { it.disable() } // HTTP 기본 인증 비활성화
             .oauth2Login { oauth2Login ->
                 oauth2Login
                     .userInfoEndpoint {
