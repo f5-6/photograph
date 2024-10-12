@@ -1,15 +1,12 @@
 package com.photograph.backend.config.security
 
-import com.photograph.backend.config.security.service.OauthUserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.DefaultSecurityFilterChain
 
 @Configuration
-class SecurityConfig(
-    private val oauthUserService: OauthUserService
-) {
+class SecurityConfig(private val oAuth2UserHandler: OAuth2UserHandler) {
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain =
@@ -19,7 +16,7 @@ class SecurityConfig(
             .oauth2Login { oauth2Login ->
                 oauth2Login
                     .userInfoEndpoint {
-                        it.userService(oauthUserService) // 사용자 정보를 가져오는 서비스
+                        it.userService(oAuth2UserHandler) // 사용자 정보를 가져오는 서비스
                     }
             }
             .build()
