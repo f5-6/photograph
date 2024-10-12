@@ -11,12 +11,4 @@ class InMemoryMemberRepository : MemberRepository {
         store[member.email] = member
         return member
     }
-
-    override fun findByEmail(email: String): Member? {
-        return store[email]
-    }
-
-    override fun findAll(): List<Member> {
-        return store.values.toList()
-    }
 }
