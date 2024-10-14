@@ -6,4 +6,3 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-frontend/package-lock.json
