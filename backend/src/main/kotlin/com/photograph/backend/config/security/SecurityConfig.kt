@@ -20,6 +20,7 @@ class SecurityConfig(
             .formLogin { it.disable() } // 폼 로그인 비활성화
             .httpBasic { it.disable() } // HTTP 기본 인증 비활성화
             .cors { it.configurationSource(corsAllowConfiguration) } // CORS 설정
+            .sessionManagement { it.invalidSessionUrl("/invalid-session") }
             .oauth2Login { oauth2Login ->
                 oauth2Login
                     .successHandler(authenticationSuccessHandler) // 성공 핸들러
