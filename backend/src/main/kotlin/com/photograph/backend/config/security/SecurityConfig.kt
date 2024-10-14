@@ -10,7 +10,8 @@ import org.springframework.security.web.DefaultSecurityFilterChain
 @Configuration
 class SecurityConfig(
     private val oAuth2UserHandler: OAuth2UserHandler,
-    private val authenticationSuccessHandler: AuthenticationSuccessHandler
+    private val authenticationSuccessHandler: AuthenticationSuccessHandler,
+    private val corsAllowConfiguration: CorsConfig
 ) {
 
     @Bean
@@ -18,6 +19,7 @@ class SecurityConfig(
         http.csrf { it.disable() } // CSRF 보호 비활성화
             .formLogin { it.disable() } // 폼 로그인 비활성화
             .httpBasic { it.disable() } // HTTP 기본 인증 비활성화
+            .cors { it.configurationSource(corsAllowConfiguration) } // CORS 설정
             .oauth2Login { oauth2Login ->
                 oauth2Login
                     .successHandler(authenticationSuccessHandler) // 성공 핸들러
