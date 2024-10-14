@@ -1,11 +1,15 @@
 package com.photograph.backend.config.security
 
+import com.photograph.backend.config.security.domain.MemberPrincipal
 import com.photograph.backend.config.security.handler.AuthenticationSuccessHandler
 import com.photograph.backend.config.security.handler.OAuth2UserHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.web.DefaultSecurityFilterChain
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 @Configuration
 class SecurityConfig(
@@ -26,4 +30,13 @@ class SecurityConfig(
                     .userInfoEndpoint { it.userService(oAuth2UserHandler) }// 사용자 정보를 가져오는 서비스
             }
             .build()
+}
+
+@RestController
+class SecurityController {
+
+    @GetMapping("/test")
+    fun test(@AuthenticationPrincipal principal: MemberPrincipal): MemberPrincipal {
+        return principal
+    }
 }
