@@ -1,5 +1,6 @@
-package com.photograph.backend.config.security
+package com.photograph.backend.config.security.handler
 
+import com.photograph.backend.config.security.domain.MemberPrincipal
 import com.photograph.backend.member.domain.MemberMapper
 import com.photograph.backend.member.domain.MemberService
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
