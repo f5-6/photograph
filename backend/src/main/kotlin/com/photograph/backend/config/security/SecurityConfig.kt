@@ -29,7 +29,7 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/").permitAll()
+                    .requestMatchers("/permit").permitAll()
                     .anyRequest().authenticated()
             }
             .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }
