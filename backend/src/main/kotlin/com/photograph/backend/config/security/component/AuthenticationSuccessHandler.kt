@@ -1,4 +1,4 @@
-package com.photograph.backend.config.security.handler
+package com.photograph.backend.config.security.component
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -16,7 +16,7 @@ class AuthenticationSuccessHandler(
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        request?.session?.maxInactiveInterval = 60 * 5  // 5분 세션 유지
+        request?.session?.maxInactiveInterval = 15  // 5분 세션 유지
         redirectStrategy.sendRedirect(
             request,
             response,

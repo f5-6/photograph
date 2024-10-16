@@ -1,4 +1,4 @@
-package com.photograph.backend.config.security.handler
+package com.photograph.backend.config.security.component
 
 import com.photograph.backend.config.security.domain.MemberPrincipal
 import com.photograph.backend.member.domain.MemberMapper
