@@ -1,4 +1,4 @@
-package com.photograph.backend.config.security
+package com.photograph.backend.config.security.domain
 
 import com.photograph.backend.member.domain.Member
 import org.springframework.security.core.GrantedAuthority
