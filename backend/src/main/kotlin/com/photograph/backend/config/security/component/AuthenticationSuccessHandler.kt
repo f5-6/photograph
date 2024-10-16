@@ -16,7 +16,7 @@ class AuthenticationSuccessHandler(
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        request?.session?.maxInactiveInterval = 15  // 5분 세션 유지
+        request?.session?.maxInactiveInterval = 60 * 5  // 5분 세션 유지
         redirectStrategy.sendRedirect(
             request,
             response,
