@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MemberRepository : MongoRepository<MemberDocument, String> {
-    fun findByName(name: String): MemberDocument?
+    fun findByProviderAndProviderKey(provider: String, providerKey: String): MemberDocument?
 }
