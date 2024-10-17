@@ -11,13 +11,13 @@ class MemberServiceTest : DescribeSpec({
 
     val memberRepository: MemberRepository = mockk()
     val entity: MemberDocument = mockk(relaxed = true)
-    val member = Member("정명", "jeongmyeong@gmail.com")
+    val member = Member("정명", "jeongmyeong@gmail.com", "google", "google-sub")
 
     describe("회원정보 서비스는") {
         val service = MemberService(memberRepository)
 
         context("회원정보가 있으면") {
-            every { memberRepository.findByName(any()) } returns entity
+            every { memberRepository.findByProviderAndProviderKey(any(), any()) } returns entity
 
             service.merge(member)
 
@@ -27,7 +27,7 @@ class MemberServiceTest : DescribeSpec({
         }
 
         context("회원정보가 없으면") {
-            every { memberRepository.findByName(any()) } returns null
+            every { memberRepository.findByProviderAndProviderKey(any(), any()) } returns null
             every { memberRepository.save(any()) } returns entity
 
             service.merge(member)

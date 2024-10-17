@@ -6,14 +6,18 @@ import org.springframework.stereotype.Service
 @Service
 class MemberService(private val memberRepository: MemberRepository) {
     fun merge(member: Member): Member {
-        return findByName(member.name)?.let { return it }
-            ?: memberRepository.save(MemberMapper.toEntity(member))
-                .run { MemberMapper.toDomain(this) }
+        return findByProviderKey(member.provider, member.providerKey)
+            ?.let { member }
+            ?: run { save(member) }
     }
 
-    fun findByName(name: String): Member? {
-        return memberRepository.findByName(name)?.let {
-            MemberMapper.toDomain(it)
-        }
+    fun findByProviderKey(provider: String, providerKey: String): Member? {
+        return memberRepository.findByProviderAndProviderKey(provider, providerKey)
+            ?.let { MemberMapper.toDomain(it) }
+    }
+
+    fun save(member: Member): Member {
+        return memberRepository.save(MemberMapper.toEntity(member))
+            .run { MemberMapper.toDomain(this) }
     }
 }

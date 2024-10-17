@@ -3,4 +3,6 @@ spring:
     name: backend
 server:
   port: 8088
-
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
