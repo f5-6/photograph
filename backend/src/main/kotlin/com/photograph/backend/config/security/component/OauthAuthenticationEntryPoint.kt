@@ -13,6 +13,10 @@ class OauthAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse?,
         authException: AuthenticationException?
     ) {
-        response?.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+        response?.apply {
+            contentType = "application/json"
+            status = HttpServletResponse.SC_UNAUTHORIZED
+            writer.write("{\"message\": \"Not Authorized\"}")
+        }
     }
 }
