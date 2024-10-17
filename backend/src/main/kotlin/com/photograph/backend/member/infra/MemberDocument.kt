@@ -12,4 +12,6 @@ data class MemberDocument(
     val name: String,
     val email: String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
+    val provider: String,
+    val providerKey: String,
 )

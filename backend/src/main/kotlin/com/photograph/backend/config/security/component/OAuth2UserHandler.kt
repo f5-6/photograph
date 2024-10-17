@@ -13,8 +13,9 @@ class OAuth2UserHandler(private val memberService: MemberService) : DefaultOAuth
 
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User = super.loadUser(userRequest)
-        val member = memberService.merge(MemberMapper.toDomain(oAuth2User))
+        val provider = userRequest.clientRegistration.clientName
 
-        return MemberPrincipal(member)
+        return memberService.merge(MemberMapper.toDomain(oAuth2User, provider))
+            .run { MemberPrincipal(this) }
     }
 }

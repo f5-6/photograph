@@ -13,6 +13,7 @@ data class MemberPrincipal(
         mutableMapOf(
             "username" to name,
             "email" to email,
+            "providerKey" to providerKey
         )
     }
 
