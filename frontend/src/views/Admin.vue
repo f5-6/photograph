@@ -1,24 +1,17 @@
 <template>
   <div>
-    <button @click="permit">permit Call</button>
-    <button @click="auth">auth Call</button>
-    <br>
-    <div>
-      <p>
-        {{ result }}
-      </p>
-    </div>
+    {{ result }}
   </div>
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import instance from '../js/axios';
 
 const result = ref('');
 
-const call = (uri) => {
-  instance.get(uri)
+const test = () => {
+  instance.get('permit')
       .then(response => {
         result.value = response.data;
       })
@@ -27,20 +20,10 @@ const call = (uri) => {
       });
 };
 
-const permit = () => {
-  call('permit');
-}
-
-const auth = () => {
-  call('auth');
-};
+onMounted(() => {
+  test();
+});
 </script>
 
 <style scoped>
-button {
-  background-color: #42b983;
-  margin: 5px;
-  padding: 10px;
-  font-size: 16px;
-}
 </style>
