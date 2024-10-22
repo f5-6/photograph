@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SampleController {
 
-    @GetMapping("/auth")
+    @GetMapping("/admin")
     fun test(@AuthenticationPrincipal member: MemberPrincipal): MemberPrincipal {
         return member
     }
@@ -16,5 +16,10 @@ class SampleController {
     @GetMapping("/permit")
     fun test(): String {
         return "permit"
+    }
+
+    @GetMapping("/api/test")
+    fun testApi(): String {
+        return "api"
     }
 }

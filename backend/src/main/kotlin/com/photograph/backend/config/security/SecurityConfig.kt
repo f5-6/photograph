@@ -30,6 +30,7 @@ class SecurityConfig(
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/api/**").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }
