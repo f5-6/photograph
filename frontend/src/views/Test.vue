@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
+import instance from '../js/axios';
 
 export default {
     name: 'Test',
@@ -29,8 +29,7 @@ export default {
             this.call('auth');
         },
         call(uri: string) { 
-            axios.defaults.withCredentials = true;
-            axios.get('http://localhost:8088/' + uri)
+            instance.get(uri)
             .then(response => {
                 this.result = response.data;
             })
