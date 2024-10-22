@@ -1,5 +1,6 @@
 package com.photograph.backend.config.security.component
 
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
@@ -16,11 +17,15 @@ class AuthenticationSuccessHandler(
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        request?.session?.maxInactiveInterval = 60 * 5  // 5분 세션 유지
+        response?.addCookie(
+            Cookie("JSESSIONID", request?.session?.id).apply {
+                maxAge = 60 * 5
+            }
+        )
         redirectStrategy.sendRedirect(
             request,
             response,
-            "${frontendUrl}/auth/redirect?session=${request?.session?.id}"
+            frontendUrl
         )
     }
 }

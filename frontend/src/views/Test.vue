@@ -3,10 +3,7 @@
         <button @click="permit">permit Call</button>
         <button @click="auth">auth Call</button>
         <br>
-        <label for="session_value">Session Value</label>
-        <input type="text" id="session_value" v-model=session>
         <div>
-            <p>Session: {{ session }}</p>
             <p>
                 {{ result }}
             </p>
@@ -21,19 +18,17 @@ export default {
     name: 'Test',
     data() {
         return {
-            session: '',
             result: ''
         }
     },
     methods: {
         permit() {
-            this.call('permit', "");
+            this.call('permit');
         },
         auth() {
-            this.call('auth', this.session);
+            this.call('auth');
         },
-        call(uri: string, session: String) { 
-            document.cookie = "JSESSIONID=" + session;
+        call(uri: string) { 
             axios.defaults.withCredentials = true;
             axios.get('http://localhost:8088/' + uri)
             .then(response => {
