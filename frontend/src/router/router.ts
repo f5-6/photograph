@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
+import {createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from 'vue-router';
 import Admin from '../views/Admin.vue';
 import Login from '../views/Login.vue';
 
@@ -21,10 +21,10 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const isAuthenticated = !!getCookie('JSESSIONID');
 
-    if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (to.matched.some((record: { meta: { requiresAuth?: boolean } }) => record.meta.requiresAuth)) {
         if (!isAuthenticated) {
             next({name: 'Login'});
         } else {
@@ -35,10 +35,14 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-function getCookie(name) {
+function getCookie(name: string): string | null {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+
+    if (parts.length === 2) {
+        const cookiePart = parts.pop();
+        return cookiePart ? cookiePart.split(';').shift() || null : null;
+    }
 
     return null;
 }
