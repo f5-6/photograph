@@ -15,10 +15,8 @@ class Oauth2LogoutHandler : LogoutSuccessHandler {
         response: HttpServletResponse?,
         authentication: Authentication?
     ) {
-        val cookieClearingLogoutHandler = CookieClearingLogoutHandler("JSESSIONID")
-        val securityContextLogoutHandler = SecurityContextLogoutHandler()
-        cookieClearingLogoutHandler.logout(request, response, authentication)
-        securityContextLogoutHandler.logout(request, response, authentication)
+        CookieClearingLogoutHandler("JSESSIONID").logout(request, response, authentication)
+        SecurityContextLogoutHandler().logout(request, response, authentication)
         response?.status = HttpServletResponse.SC_OK
     }
 }
