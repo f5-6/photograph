@@ -26,7 +26,10 @@ router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, 
 
     if (to.matched.some((record: { meta: { requiresAuth?: boolean } }) => record.meta.requiresAuth)) {
         if (!isAuthenticated) {
-            next({name: 'Login'});
+            next({
+                name: 'Login',
+                query: {redirect: to.fullPath}
+            });
         } else {
             next();
         }
