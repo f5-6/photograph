@@ -34,7 +34,7 @@ class SecurityConfig(
                 authorizeRequests
                     .requestMatchers("/api/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
             }
             .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }
             .build()
