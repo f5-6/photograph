@@ -13,10 +13,11 @@ class OauthAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse?,
         authException: AuthenticationException?
     ) {
+        val errorMessage = authException?.message ?: "Unauthorized"
         response?.apply {
             contentType = "application/json"
             status = HttpServletResponse.SC_UNAUTHORIZED
-            writer.write("{\"message\": \"Not Authorized\"}")
+            writer.write("{\"message\": \"$errorMessage\"}")
         }
     }
 }
