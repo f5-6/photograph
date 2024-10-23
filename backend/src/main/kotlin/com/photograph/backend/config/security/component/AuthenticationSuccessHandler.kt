@@ -24,7 +24,7 @@ class AuthenticationSuccessHandler(
             if (state != null && state.contains("redirectUrl"))
                 UriComponentsBuilder.fromUriString(state)
                     .build().queryParams.getFirst("redirectUrl")
-            else ""
+            else "/admin"
 
         redirectStrategy.sendRedirect(
             request,
