@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component
 @Component
 class Oauth2LogoutHandler : LogoutSuccessHandler {
     override fun onLogoutSuccess(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        authentication: Authentication?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        authentication: Authentication
     ) {
         CookieClearingLogoutHandler("JSESSIONID").logout(request, response, authentication)
         SecurityContextLogoutHandler().logout(request, response, authentication)
-        response?.status = HttpServletResponse.SC_OK
+        response.status = HttpServletResponse.SC_OK
     }
 }
