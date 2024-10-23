@@ -23,10 +23,8 @@ const test = () => {
 
 const logout = () => {
   instance.get('logout')
-    .then(response => {
-        if (response.status === 200) {
-          window.location.href = '/';
-        }
+    .then(_ => {
+        window.location.href = '/';
       })
 };
 
