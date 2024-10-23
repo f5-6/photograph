@@ -2,6 +2,7 @@
   <div>
     {{ result }}
   </div>
+  <button @click="logout">Logout</button>
 </template>
 
 <script lang="ts" setup>
@@ -18,6 +19,15 @@ const test = () => {
       .catch(error => {
         result.value = error;
       });
+};
+
+const logout = () => {
+  instance.get('logout')
+    .then(response => {
+        if (response.status === 200) {
+          window.location.href = '/';
+        }
+      })
 };
 
 onMounted(() => {
