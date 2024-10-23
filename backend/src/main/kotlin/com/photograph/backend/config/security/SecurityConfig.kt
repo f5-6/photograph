@@ -2,6 +2,7 @@ package com.photograph.backend.config.security
 
 import com.photograph.backend.config.security.component.AuthenticationSuccessHandler
 import com.photograph.backend.config.security.component.OAuth2UserHandler
+import com.photograph.backend.config.security.component.Oauth2LogoutHandler
 import com.photograph.backend.config.security.component.OauthAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,9 +11,10 @@ import org.springframework.security.web.DefaultSecurityFilterChain
 
 @Configuration
 class SecurityConfig(
+    private val corsAllowConfiguration: CorsConfig,
+    private val oauth2LogoutHandler: Oauth2LogoutHandler,
     private val oAuth2UserHandler: OAuth2UserHandler,
     private val authenticationSuccessHandler: AuthenticationSuccessHandler,
-    private val corsAllowConfiguration: CorsConfig,
     private val oauthAuthenticationEntryPoint: OauthAuthenticationEntryPoint,
 ) {
 
@@ -27,6 +29,7 @@ class SecurityConfig(
                     .successHandler(authenticationSuccessHandler) // 성공 핸들러
                     .userInfoEndpoint { it.userService(oAuth2UserHandler) } // 사용자 정보를 가져오는 서비스
             }
+            .logout { it.logoutSuccessHandler(oauth2LogoutHandler) }
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/api/**").permitAll()
@@ -35,4 +38,5 @@ class SecurityConfig(
             }
             .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }
             .build()
+
 }
