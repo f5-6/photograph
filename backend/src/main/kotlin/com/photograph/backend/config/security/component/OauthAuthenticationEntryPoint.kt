@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component
 @Component
 class OauthAuthenticationEntryPoint : AuthenticationEntryPoint {
     override fun commence(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        authException: AuthenticationException?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        authException: AuthenticationException
     ) {
-        val errorMessage = authException?.message ?: "Unauthorized"
-        response?.apply {
+        val errorMessage = authException.message ?: "Unauthorized"
+        response.apply {
             contentType = APPLICATION_JSON_VALUE
             status = HttpServletResponse.SC_UNAUTHORIZED
             writer.write("{\"message\": \"$errorMessage\"}")
