@@ -23,8 +23,9 @@ const router = createRouter({
 
 router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const isAuthenticated = !!getCookie('JSESSIONID');
+    const needAuth = to.matched.some((record: { meta: { requiresAuth?: boolean } }) => record.meta.requiresAuth)
 
-    if (to.matched.some((record: { meta: { requiresAuth?: boolean } }) => record.meta.requiresAuth)) {
+    if (needAuth) {
         if (!isAuthenticated) {
             next({
                 name: 'Login',
@@ -34,6 +35,12 @@ router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, 
             next();
         }
     } else {
+        if (to.name == 'Login' && isAuthenticated) {
+            next({
+                name: 'Admin'
+            });
+        }
+
         next();
     }
 });
