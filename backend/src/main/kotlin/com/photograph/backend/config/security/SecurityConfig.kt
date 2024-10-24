@@ -35,9 +35,13 @@ class SecurityConfig(
                         )
                     )
                 }
-        }.logout { it.logoutSuccessHandler(oauth2LogoutHandler) }.authorizeHttpRequests { authorizeRequests ->
-            authorizeRequests.requestMatchers("/api/**").permitAll().requestMatchers("/admin/**").hasRole("ADMIN")
+        }
+        .logout { it.logoutSuccessHandler(oauth2LogoutHandler) }
+        .authorizeHttpRequests { authorizeRequests ->
+            authorizeRequests.requestMatchers("/api/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
-        }.exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }.build()
+        }
+        .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }.build()
 
 }

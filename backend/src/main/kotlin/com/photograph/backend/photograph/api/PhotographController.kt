@@ -2,6 +2,7 @@ package com.photograph.backend.photograph.api
 
 import com.photograph.backend.config.security.domain.MemberPrincipal
 import com.photograph.backend.photograph.application.PhotographFacade
+import com.photograph.backend.photograph.application.dto.PostPhotographDTO
 import jakarta.validation.Valid
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -23,6 +24,14 @@ class PhotographController(private val photographFacade: PhotographFacade) {
 
     @PostMapping("/admin/photographs}", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun post(@ModelAttribute @Valid request: PostPhotographRequest, @AuthenticationPrincipal member: MemberPrincipal) {
+        photographFacade.post(
+            PostPhotographDTO(
+                memberId = member.attributes["id"] as String,
+                image = request.image,
+                description = request.description,
+                tookAt = request.tookAt
+            )
+        )
 
     }
 

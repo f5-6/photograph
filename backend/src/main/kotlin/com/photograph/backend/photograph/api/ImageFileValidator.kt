@@ -15,7 +15,7 @@ class ImageFileValidator : ConstraintValidator<ImageFile, MultipartFile> {
         value: MultipartFile,
         context: ConstraintValidatorContext?,
     ): Boolean {
-        val file = File(value.originalFilename ?: throw NullPointerException())
+        val file = File(value.originalFilename ?: throw IllegalArgumentException())
         var type = ""
 
         try {
@@ -24,6 +24,14 @@ class ImageFileValidator : ConstraintValidator<ImageFile, MultipartFile> {
             log.error("image type error", e)
         }
 
-        return type.startsWith("image")
+        if (!type.startsWith("image")) {
+            return false
+        }
+
+        if (value.size > 1 * 1024 * 1024) {
+            return false
+        }
+
+        return true
     }
 }

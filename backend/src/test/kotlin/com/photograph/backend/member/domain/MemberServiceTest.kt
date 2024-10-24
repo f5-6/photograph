@@ -11,7 +11,7 @@ class MemberServiceTest : DescribeSpec({
 
     val memberRepository: MemberRepository = mockk()
     val entity: MemberDocument = mockk(relaxed = true)
-    val member = Member("정명", "jeongmyeong@gmail.com", "google", "google-sub")
+    val member = Member("434", "정명", "jeongmyeong@gmail.com", "google", "google-sub")
 
     describe("회원정보 서비스는") {
         val service = MemberService(memberRepository)

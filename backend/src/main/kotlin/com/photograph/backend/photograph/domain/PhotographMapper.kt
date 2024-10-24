@@ -17,7 +17,6 @@ object PhotographMapper {
 
     fun toEntity(photograph: Photograph) = with(photograph) {
         PhotographDocument(
-            id = id,
             memberId = memberId,
             url = url,
             description = description,
