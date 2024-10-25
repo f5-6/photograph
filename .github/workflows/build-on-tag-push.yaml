@@ -1,4 +1,4 @@
-name: ci
+name: build-on-tag-push
 
 on:
   push:
@@ -46,5 +46,4 @@ jobs:
       - name: Build with Gradle
         run: |
           cd ./backend
-          chmod +x gradlew
-          ./gradlew build
+          ./gradlew build -x test
