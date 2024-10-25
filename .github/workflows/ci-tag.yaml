@@ -10,6 +10,9 @@ jobs:
   front-build:
     if: startsWith(github.ref, 'refs/tags/front-')
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -21,13 +24,15 @@ jobs:
           
       - name: Build With Npm
         run: |
-          cd ./frontend
           npm install
           npm run build
 
   back-build:
     if: startsWith(github.ref, 'refs/tags/back-')
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -44,6 +49,4 @@ jobs:
           gradle-version: 8.10.2
 
       - name: Build with Gradle
-        run: |
-          cd ./backend
-          ./gradlew build -x test
+        run: ./gradlew build -x test

@@ -7,9 +7,14 @@ on:
     paths:
       - backend/**
 
+defaults:
+  run:
+    working-directory: ./backend
+
 jobs:
   back-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -26,6 +31,4 @@ jobs:
           gradle-version: 8.10.2
 
       - name: Build with Gradle
-        run: |
-          cd ./backend
-          ./gradlew test
+        run: ./gradlew test
