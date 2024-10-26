@@ -13,8 +13,14 @@ instance.interceptors.response.use(
         return response;
     },
     error => {
+        console.log(error)
+
+
         if (error.response.status === 401) {
-            window.location.href = '/login';
+            instance.get("/logout")
+                .then(_ => {
+                    window.location.href = '/login';
+                })
         }
         return Promise.reject(error);
     }

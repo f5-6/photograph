@@ -9,8 +9,9 @@ data class MemberPrincipal(
 ) : OAuth2User {
     override fun getName(): String = member.name
 
-    override fun getAttributes(): MutableMap<String, Any> = with(member) {
+    override fun getAttributes(): MutableMap<String, Any?> = with(member) {
         mutableMapOf(
+            "id" to id,
             "username" to name,
             "email" to email,
             "providerKey" to providerKey

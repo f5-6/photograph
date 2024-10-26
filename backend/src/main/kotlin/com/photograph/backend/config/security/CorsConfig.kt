@@ -12,7 +12,7 @@ class CorsConfig(
 ) : CorsConfigurationSource {
     override fun getCorsConfiguration(request: HttpServletRequest): CorsConfiguration {
         return CorsConfiguration().apply {
-            allowedOrigins = listOf(frontendUrl)
+            allowedOriginPatterns = listOf("http://localhost:*", frontendUrl)
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH")
             allowedHeaders = listOf("*")
             allowCredentials = true
