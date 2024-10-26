@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PhotographRepository : MongoRepository<PhotographDocument, String> {
+    fun findByMemberId(memberId: String): List<PhotographDocument>
 }

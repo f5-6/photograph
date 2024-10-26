@@ -10,10 +10,11 @@ class PhotographFacade(private val photographService: PhotographService) {
 
     fun post(dto: PostPhotographDTO) {
         // s3 저장 로직
-        val url = "test"
+        val url = "test.com/image.jpg"
 
         // 저장 로직
         photographService.save(Photograph.create(dto, url))
     }
 
+    fun get(memberId: String) = photographService.get(memberId)
 }

@@ -10,4 +10,10 @@ class PhotographService(private val photographRepository: PhotographRepository) 
             PhotographMapper.toEntity(photograph)
         ).run { PhotographMapper.toDomain(this) }
     }
+
+    fun get(memberId: String): List<Photograph> {
+        return photographRepository.findByMemberId(memberId).map {
+            PhotographMapper.toDomain(it)
+        }
+    }
 }
