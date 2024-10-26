@@ -13,7 +13,7 @@ class Oauth2LogoutHandler : LogoutSuccessHandler {
     override fun onLogoutSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authentication: Authentication
+        authentication: Authentication?
     ) {
         CookieClearingLogoutHandler("JSESSIONID").logout(request, response, authentication)
         SecurityContextLogoutHandler().logout(request, response, authentication)
