@@ -37,7 +37,10 @@ class SecurityConfig(
                         )
                     }
             }
-            .logout { it.logoutSuccessHandler(oauth2LogoutHandler) }
+            .logout {
+                it.logoutSuccessHandler(oauth2LogoutHandler)
+                    .invalidateHttpSession(true)
+            }
             .authorizeHttpRequests { authorizeRequests ->
                 authorizeRequests.requestMatchers("/api/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
