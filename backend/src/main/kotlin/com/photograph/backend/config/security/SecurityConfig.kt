@@ -22,26 +22,28 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain = http.csrf { it.disable() } // CSRF 보호 비활성화
-        .httpBasic { it.disable() } // HTTP 기본 인증 비활성화
-        .cors { it.configurationSource(corsAllowConfiguration) } // CORS 설정
-        .formLogin { it.disable() }.oauth2Login { oauth2Login ->
-            oauth2Login.successHandler(authenticationSuccessHandler) // 성공 핸들러
-                .userInfoEndpoint { it.userService(oAuth2UserHandler) } // 사용자 정보를 가져오는 서비스
-                .authorizationEndpoint {
-                    it.authorizationRequestResolver(
-                        AuthorizationRequestHandler(
-                            clientRegistrationRepository
+    fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain {
+        return http.csrf { it.disable() } // CSRF 보호 비활성화
+            .httpBasic { it.disable() } // HTTP 기본 인증 비활성화
+            .cors { it.configurationSource(corsAllowConfiguration) } // CORS 설정
+            .formLogin { it.disable() }.oauth2Login { oauth2Login ->
+                oauth2Login.successHandler(authenticationSuccessHandler) // 성공 핸들러
+                    .userInfoEndpoint { it.userService(oAuth2UserHandler) } // 사용자 정보를 가져오는 서비스
+                    .authorizationEndpoint {
+                        it.authorizationRequestResolver(
+                            AuthorizationRequestHandler(
+                                clientRegistrationRepository
+                            )
                         )
-                    )
-                }
-        }
-        .logout { it.logoutSuccessHandler(oauth2LogoutHandler) }
-        .authorizeHttpRequests { authorizeRequests ->
-            authorizeRequests.requestMatchers("/api/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        }
-        .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }.build()
+                    }
+            }
+            .logout { it.logoutSuccessHandler(oauth2LogoutHandler) }
+            .authorizeHttpRequests { authorizeRequests ->
+                authorizeRequests.requestMatchers("/api/**").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
+            }
+            .exceptionHandling { it.authenticationEntryPoint(oauthAuthenticationEntryPoint) }.build()
+    }
 
 }

@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
 data class PostPhotographRequest(
-    @ImageFile
+    @field:ImageFile
     val image: MultipartFile,
     val description: String,
     val tookAt: LocalDate,

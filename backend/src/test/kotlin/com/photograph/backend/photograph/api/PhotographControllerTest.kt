@@ -1,73 +1,117 @@
 package com.photograph.backend.photograph.api
 
-import org.junit.jupiter.api.Test
+import com.photograph.backend.config.security.component.OAuth2UserHandler
+import com.photograph.backend.config.security.domain.MemberPrincipal
+import com.photograph.backend.member.domain.Member
+import com.photograph.backend.photograph.application.PhotographFacade
+import org.mockito.Mockito.doNothing
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.oauth2.core.user.OAuth2User
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import kotlin.test.Test
 
-@WebMvcTest(PhotographControllerTest::class)
-class PhotographControllerTest(@Autowired val mockMvc: MockMvc) {
+@WebMvcTest(PhotographController::class)
+class PhotographControllerTest {
 
-//    : DescribeSpec({
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
+    @MockBean
+    private lateinit var photographFacade: PhotographFacade
+
+    @MockBean
+    private lateinit var oAuth2UserHandler: OAuth2UserHandler
 
     @Test
-    @WithMockUser(roles = ["ADMIN"])
-    fun test() {
-        val file = MockMultipartFile(
-            "image",
-            "test.txt",
-            MediaType.TEXT_PLAIN_VALUE,
-            ByteArray(1 * 1024 * 1024)
+    fun test_file_type() {
+        doNothing().`when`(photographFacade).post(any())
+
+        val oAuth2User: OAuth2User = MemberPrincipal(
+            Member(
+                id = "14", name = "jeongmyeong", email = "test@test.com", provider = "google", providerKey = "afdsd"
+            )
         )
 
-        val a = SecurityContextHolder.getContext().authentication
+        val file =
+            MockMultipartFile(
+                "image",
+                "image.html",
+                MediaType.TEXT_HTML_VALUE,
+                ByteArray(1 * 1024 * 1024)
+            )
 
-        val res = mockMvc.perform(
+        mockMvc.perform(
             multipart("/admin/photographs")
                 .file(file)
                 .param("description", "T_T")
                 .param("tookAt", "2020-10-01")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-        )
-
-        res.andExpect(status().isOk)
+                .with(oauth2Login().oauth2User(oAuth2User))
+                .with(csrf()) // Security config 에서 비활성화 해두어도, 추가해야함 ;;
+        ).andExpect(status().is4xxClientError)
     }
 
-//    describe("요청시") {
-//        val userDetails = User.withUsername("testUser")
-//            .password("password")
-//            .roles("ADMIN")
-//            .build()
-//
-//        context("확장자가 이미지가 아닌 경우") {
-//            it("오류가 발생한다") {
-//
-//            }
-//        }
-//
-//        context("파일 크기가 너무 크면") {
-//            it("오류가 발생한다") {
-//                val file =
-//                    MockMultipartFile(
-//                        "image",
-//                        "image.png",
-//                        MediaType.IMAGE_PNG_VALUE,
-//                        ByteArray(1 * 1024 * 1024)
-//                    )
-//
-//                mockMvc.perform(
-//                    multipart("/admin/photographs")
-//                        .file(file)
-//                        .param("description", "T_T")
-//                        .param("tookAt", "2020-10-01")
-//                ).andExpect(status().isOk)
-//            }
-//        }
-//    }
+    @Test
+    fun test_file_size() {
+        doNothing().`when`(photographFacade).post(any())
+
+        val oAuth2User: OAuth2User = MemberPrincipal(
+            Member(
+                id = "14", name = "jeongmyeong", email = "test@test.com", provider = "google", providerKey = "afdsd"
+            )
+        )
+
+        val file =
+            MockMultipartFile(
+                "image",
+                "image.png",
+                MediaType.IMAGE_PNG_VALUE,
+                ByteArray(2 * 1024 * 1024)
+            )
+
+        mockMvc.perform(
+            multipart("/admin/photographs")
+                .file(file)
+                .param("description", "T_T")
+                .param("tookAt", "2020-10-01")
+                .with(oauth2Login().oauth2User(oAuth2User))
+                .with(csrf()) // Security config 에서 비활성화 해두어도, 추가해야함 ;;
+        ).andExpect(status().is4xxClientError)
+    }
+
+    @Test
+    fun test() {
+        doNothing().`when`(photographFacade).post(any())
+
+        val oAuth2User: OAuth2User = MemberPrincipal(
+            Member(
+                id = "14", name = "jeongmyeong", email = "test@test.com", provider = "google", providerKey = "afdsd"
+            )
+        )
+
+        val file =
+            MockMultipartFile(
+                "image",
+                "image.png",
+                MediaType.IMAGE_PNG_VALUE,
+                ByteArray(1 * 1024 * 1024)
+            )
+
+        mockMvc.perform(
+            multipart("/admin/photographs")
+                .file(file)
+                .param("description", "T_T")
+                .param("tookAt", "2020-10-01")
+                .with(oauth2Login().oauth2User(oAuth2User))
+                .with(csrf()) // Security config 에서 비활성화 해두어도, 추가해야함 ;;
+        ).andExpect(status().isOk)
+    }
 }
