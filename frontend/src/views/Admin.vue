@@ -49,6 +49,13 @@
             </v-col>
           </v-row>
         </v-form>
+
+        <v-snackbar v-model="snackbar" :timeout="3000" color="success">
+          {{ snackbarText }}
+          <template v-slot:actions>
+            <v-btn @click="snackbar = false">Close</v-btn>
+          </template>
+        </v-snackbar>
       </v-container>
     </v-main>
   </v-app>
@@ -57,6 +64,8 @@
 <script lang="ts" setup>
 import {reactive, ref} from 'vue';
 import instance from '../js/axios';
+import dayjs from "dayjs";
+import {VForm} from 'vuetify/components';
 
 const logout = () => {
   instance.get('logout')
@@ -66,18 +75,18 @@ const logout = () => {
 };
 
 const valid = ref(false);
-const formRef = ref(null);
+const formRef = ref(VForm);
 const form = reactive({
-  tookAt: null,
+  tookAt: null as Date | null,
   description: '',
-  image: null,
+  image: null as File | null,
 });
 
 const maxFileSize = 2 * 1024 * 1024;
-const dateRules = [(v) => !!v || 'Date is required'];
-const descriptionRules = [(v) => !!v || 'Description is required'];
+const dateRules: Array<(v: any) => boolean | string> = [(v) => !!v || 'Date is required'];
+const descriptionRules: Array<(v: any) => boolean | string> = [(v) => !!v || 'Description is required'];
 
-const fileRules = [
+const fileRules: Array<(v: FileList | null) => boolean | string> = [
   (v) => !!v || 'File is required',
   (v) => {
     if (!v || v.length === 0) return true; // 파일이 없을 경우
@@ -89,15 +98,36 @@ const fileRules = [
   },
 ];
 
+const snackbar = ref(false);
+const snackbarText = ref('');
+
 const submitForm = () => {
   if (formRef.value.validate()) {
-    alert('Form submitted!');
+    const formData = new FormData();
+
+    formData.set('image', form.image!);
+    formData.set('tookAt', dayjs(form.tookAt).format('YYYY-MM-DD'));
+    formData.set('description', form.description);
+
+    try {
+      instance.post("/admin/photographs", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      snackbarText.value = 'Form submitted successfully!';
+      snackbar.value = true;
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    } catch (e) {
+      snackbarText.value = 'Error submitting form!';
+      snackbar.value = true;
+    }
   }
 };
-
-// 수정을 위한 file load
-// onMounted(() => {
-// });
 </script>
 
 <style scoped>
