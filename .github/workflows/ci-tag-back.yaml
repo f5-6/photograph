@@ -12,7 +12,7 @@ jobs:
       run:
         working-directory: ./backend
     steps:
-      - name: Checkout sources
+      - name: Checkout Sources
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -29,10 +29,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test
 
-      - name: Extract tag
+      - name: Set Environment Variable
         run: |
           TAG=$(echo $GITHUB_REF | cut -d '/' -f 3 | cut -d '-' -f 2)
           echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}" >> $GITHUB_ENV
+          echo "DOCKER_TOKEN=${{ secrets.DOCKERHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE=photograph-server:$TAG" >> $GITHUB_ENV
 
       - name: build docker image
-        run: docker build -t photograph-server:$TAG .
+        run: docker build -t $DOCKER_USER/$DOCKER_IMAGE .
+
+      - name: Publish to docker hub
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+          docker push $DOCKER_USER/$DOCKER_IMAGE
