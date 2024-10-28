@@ -50,7 +50,7 @@
           </v-row>
         </v-form>
 
-        <v-card>
+        <v-card class="mt-9">
           <v-data-iterator
               :items="photographs"
           >
@@ -65,6 +65,13 @@
                   >
                     <v-card border class="pb-3" flat>
                       <v-img :src="item.raw.url"></v-img>
+
+                      <v-btn
+                          class="remove-button"
+                          density="default"
+                          icon="mdi-delete"
+                          @click="removePhoto(item.raw.id)"
+                      ></v-btn>
 
                       <v-list-item :subtitle="item.raw.tookAt" class="mb-2">
                         <template v-slot:title>
@@ -168,10 +175,26 @@ const getPhotos = () => {
       })
 }
 
+const removePhoto = (id) => {
+  instance.delete(`/admin/photographs/${id}`,)
+      .then(_ => {
+        const index = photographs.value.findIndex(photo => photo.id === id);
+
+        if (index !== -1) {
+          photographs.value.splice(index, 1);
+        }
+      })
+}
+
 onMounted(() => {
   getPhotos();
 })
 </script>
 
 <style scoped>
+.remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 </style>

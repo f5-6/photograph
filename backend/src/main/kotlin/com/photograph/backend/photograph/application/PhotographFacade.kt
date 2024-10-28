@@ -11,7 +11,7 @@ class PhotographFacade(private val photographService: PhotographService) {
 
     fun post(dto: PostPhotographDTO) {
         // s3 저장 로직
-        val url = "test.com/image.jpg"
+        val url = "https://cdn.vuetifyjs.com/docs/images/graphics/games/7.png"
 
         // 저장 로직
         photographService.save(Photograph.create(dto, url))
@@ -21,7 +21,7 @@ class PhotographFacade(private val photographService: PhotographService) {
 
     fun remove(dto: RemovePhotographDTO) {
         //s3 remove
-        
+
         val photograph = photographService.getById(dto.photographId)
 
         if (photograph.memberId != dto.memberId) {
