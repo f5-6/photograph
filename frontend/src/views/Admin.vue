@@ -177,8 +177,6 @@ const getPhotos = () => {
   instance.get('/admin/photographs')
       .then(response => {
         photographs.value = response.data;
-
-        console.log(photographs.value);
       })
 }
 
