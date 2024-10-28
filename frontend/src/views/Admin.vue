@@ -50,6 +50,36 @@
           </v-row>
         </v-form>
 
+        <v-card>
+          <v-data-iterator
+              :items="photographs"
+          >
+            <template v-slot:default="{ items }">
+              <v-container class="pa-2" fluid>
+                <v-row dense>
+                  <v-col
+                      v-for="item in items"
+                      :key="item.raw.id"
+                      cols="auto"
+                      md="4"
+                  >
+                    <v-card border class="pb-3" flat>
+                      <v-img :src="item.raw.url"></v-img>
+
+                      <v-list-item :subtitle="item.raw.tookAt" class="mb-2">
+                        <template v-slot:title>
+                          <strong class="text-h6 mb-2">{{ item.raw.description }}</strong>
+                        </template>
+                      </v-list-item>
+
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </template>
+          </v-data-iterator>
+        </v-card>
+
         <v-snackbar v-model="snackbar" :timeout="3000" color="success">
           {{ snackbarText }}
           <template v-slot:actions>
@@ -62,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, ref} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
 import instance from '../js/axios';
 import dayjs from "dayjs";
 import {VForm} from 'vuetify/components';
@@ -73,6 +103,8 @@ const logout = () => {
         window.location.href = '/';
       })
 };
+
+const photographs = ref([]);
 
 const valid = ref(false);
 const formRef = ref(VForm);
@@ -128,6 +160,17 @@ const submitForm = () => {
     }
   }
 };
+
+const getPhotos = () => {
+  instance.get('/admin/photographs')
+      .then(response => {
+        photographs.value = response.data;
+      })
+}
+
+onMounted(() => {
+  getPhotos();
+})
 </script>
 
 <style scoped>
