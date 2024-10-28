@@ -6,6 +6,7 @@ import com.photograph.backend.photograph.application.dto.PostPhotographDTO
 import jakarta.validation.Valid
 import org.springframework.http.MediaType
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,4 +30,7 @@ class PhotographAdminController(private val photographFacade: PhotographFacade) 
             )
         )
     }
+
+    @GetMapping("/photographs")
+    fun post(@AuthenticationPrincipal member: MemberPrincipal) = photographFacade.get(member.attributes["id"] as String)
 }

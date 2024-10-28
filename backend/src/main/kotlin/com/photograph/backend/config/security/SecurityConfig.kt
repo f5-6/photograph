@@ -42,7 +42,8 @@ class SecurityConfig(
                     .invalidateHttpSession(true)
             }
             .authorizeHttpRequests { authorizeRequests ->
-                authorizeRequests.requestMatchers("/api/**").permitAll()
+                authorizeRequests
+                    .requestMatchers("/api/**").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
