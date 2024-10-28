@@ -1,5 +1,6 @@
-package com.photograph.backend.photograph.api
+package com.photograph.backend.photograph.api.controller
 
+import com.photograph.backend.photograph.api.ImageFile
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 
