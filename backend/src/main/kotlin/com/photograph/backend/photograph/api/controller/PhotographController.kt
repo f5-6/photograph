@@ -12,7 +12,5 @@ import org.springframework.web.bind.annotation.RestController
 class PhotographController(private val photographFacade: PhotographFacade) {
 
     @GetMapping("/members/{memberId}/photographs")
-    fun get(@PathVariable("memberId") memberId: String): List<Photograph> {
-        return photographFacade.get(memberId)
-    }
+    fun get(@PathVariable("memberId") memberId: String): List<Photograph> = photographFacade.get(memberId)
 }
