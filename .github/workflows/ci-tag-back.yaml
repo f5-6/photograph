@@ -7,7 +7,6 @@ on:
 
 jobs:
   back-build:
-    if: startsWith(github.ref, 'refs/tags/back-')
     runs-on: ubuntu-latest
     defaults:
       run:
