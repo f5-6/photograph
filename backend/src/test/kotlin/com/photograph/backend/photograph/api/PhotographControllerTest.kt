@@ -3,6 +3,7 @@ package com.photograph.backend.photograph.api
 import com.photograph.backend.config.security.component.OAuth2UserHandler
 import com.photograph.backend.config.security.domain.MemberPrincipal
 import com.photograph.backend.member.domain.Member
+import com.photograph.backend.photograph.api.controller.PhotographAdminController
 import com.photograph.backend.photograph.application.PhotographFacade
 import org.mockito.Mockito.doNothing
 import org.mockito.kotlin.any
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multi
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.Test
 
-@WebMvcTest(PhotographController::class)
+@WebMvcTest(PhotographAdminController::class)
 class PhotographControllerTest {
 
     @Autowired
@@ -56,7 +57,7 @@ class PhotographControllerTest {
                 .param("tookAt", "2020-10-01")
                 .with(oauth2Login().oauth2User(oAuth2User))
                 .with(csrf()) // Security config 에서 비활성화 해두어도, 추가해야함 ;;
-        ).andExpect(status().is4xxClientError)
+        ).andExpect(status().isBadRequest)
     }
 
     @Test
@@ -84,7 +85,7 @@ class PhotographControllerTest {
                 .param("tookAt", "2020-10-01")
                 .with(oauth2Login().oauth2User(oAuth2User))
                 .with(csrf()) // Security config 에서 비활성화 해두어도, 추가해야함 ;;
-        ).andExpect(status().is4xxClientError)
+        ).andExpect(status().isBadRequest)
     }
 
     @Test
