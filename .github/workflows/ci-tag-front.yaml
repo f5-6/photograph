@@ -1,0 +1,26 @@
+name: build-on-tag-push-frontend
+
+on:
+  push:
+    tags:
+      - 'front-*'
+
+jobs:
+  front-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+          
+      - name: Build With Npm
+        run: |
+          npm install
+          npm run build
