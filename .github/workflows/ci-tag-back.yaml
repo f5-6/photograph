@@ -29,3 +29,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build -x test
+
+      - name: Extract tag
+        run: |
+          TAG=$(echo $GITHUB_REF | cut -d '/' -f 3 | cut -d '-' -f 2)
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+      - name: build docker image
+        run: |
+          docker build -t photograph-server:$TAG .
