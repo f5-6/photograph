@@ -1,0 +1,48 @@
+name: build-on-tag-push-backend
+
+on:
+  push:
+    tags:
+      - 'back-*'
+
+jobs:
+  back-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.10.2
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Set Environment Variable
+        run: |
+          TAG=$(echo $GITHUB_REF | cut -d '/' -f 3 | cut -d '-' -f 2)
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE=photograph-server:$TAG" >> $GITHUB_ENV
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE .
+
+      - name: Login Dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publish to docker hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE
