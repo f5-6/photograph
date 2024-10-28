@@ -35,5 +35,4 @@ jobs:
           echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: build docker image
-        run: |
-          docker build -t photograph-server:$TAG .
+        run: docker build -t photograph-server:$TAG .
