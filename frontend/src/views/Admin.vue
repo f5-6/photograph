@@ -111,7 +111,14 @@ const logout = () => {
       })
 };
 
-const photographs = ref([]);
+interface Photograph {
+  id: string;
+  url: string;
+  description: string;
+  tookAt: string;
+}
+
+const photographs = ref<Photograph[]>([]);
 
 const valid = ref(false);
 const formRef = ref(VForm);
@@ -153,14 +160,12 @@ const submitForm = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+      }).then(_ => {
+        getPhotos();
       });
 
       snackbarText.value = 'Form submitted successfully!';
       snackbar.value = true;
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
     } catch (e) {
       snackbarText.value = 'Error submitting form!';
       snackbar.value = true;
@@ -172,10 +177,12 @@ const getPhotos = () => {
   instance.get('/admin/photographs')
       .then(response => {
         photographs.value = response.data;
+
+        console.log(photographs.value);
       })
 }
 
-const removePhoto = (id) => {
+const removePhoto = (id: string) => {
   instance.delete(`/admin/photographs/${id}`,)
       .then(_ => {
         const index = photographs.value.findIndex(photo => photo.id === id);
