@@ -2,6 +2,7 @@ package com.photograph.backend.photograph.domain
 
 import com.photograph.backend.photograph.infra.PhotographRepository
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class PhotographService(private val photographRepository: PhotographRepository) {
@@ -16,4 +17,11 @@ class PhotographService(private val photographRepository: PhotographRepository) 
             PhotographMapper.toDomain(it)
         }
     }
+
+    fun getById(id: String): Photograph {
+        return photographRepository.findById(id).getOrElse { throw PhotographNotFoundException() }
+            .run { PhotographMapper.toDomain(this) }
+    }
+
+    fun remove(id: String) = photographRepository.deleteById(id)
 }
