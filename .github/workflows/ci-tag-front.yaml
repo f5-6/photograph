@@ -19,8 +19,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '21'
+
+      - name: Inject Environment Variables
+        run: |
+          echo "VITE_API_SERVER_URL=${{ secrets.VITE_API_SERVER_URL }}" > .env.local
           
       - name: Build With Npm
         run: |
           npm install
           npm run build
+
+      - name: Set Environment Variable
+        run: |
+          TAG=$(echo $GITHUB_REF | cut -d '/' -f 3 | cut -d '-' -f 2)
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE=photograph-view" >> $GITHUB_ENV
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE:$TAG .
+
+      - name: Login Dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publish to docker hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/$DOCKER_IMAGE:$TAG
