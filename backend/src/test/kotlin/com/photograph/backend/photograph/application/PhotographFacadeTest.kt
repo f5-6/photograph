@@ -2,6 +2,7 @@ package com.photograph.backend.photograph.application
 
 import com.photograph.backend.photograph.application.dto.RemovePhotographDTO
 import com.photograph.backend.photograph.domain.PhotographService
+import com.photograph.backend.photograph.infra.S3ImageHandler
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
@@ -9,7 +10,8 @@ import io.mockk.mockk
 
 class PhotographFacadeTest : DescribeSpec({
     val service: PhotographService = mockk()
-    val facade = PhotographFacade(service)
+    val s3ImageHandler: S3ImageHandler = mockk()
+    val facade = PhotographFacade(service, s3ImageHandler)
 
     describe("삭제시에") {
         val dto = RemovePhotographDTO("memberId", "photographId")
