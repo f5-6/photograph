@@ -4,16 +4,18 @@ import com.photograph.backend.photograph.application.dto.PostPhotographDTO
 import com.photograph.backend.photograph.application.dto.RemovePhotographDTO
 import com.photograph.backend.photograph.domain.Photograph
 import com.photograph.backend.photograph.domain.PhotographService
+import com.photograph.backend.photograph.infra.S3ImageHandler
 import org.springframework.stereotype.Service
 
 @Service
-class PhotographFacade(private val photographService: PhotographService) {
+class PhotographFacade(
+    private val photographService: PhotographService,
+    private val s3ImageHandler: S3ImageHandler
+) {
 
     fun post(dto: PostPhotographDTO) {
-        // s3 저장 로직
-        val url = "https://cdn.vuetifyjs.com/docs/images/graphics/games/7.png"
+        val url = s3ImageHandler.uploadImageToS3(dto.image)
 
-        // 저장 로직
         photographService.save(Photograph.create(dto, url))
     }
 
