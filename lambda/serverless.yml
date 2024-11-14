@@ -1,16 +1,16 @@
 # "org" ensures this Service is used with the correct Serverless Framework Access Key.
-org: 계정
+org:
 # "app" enables Serverless Framework Dashboard features and sharing them with other Services.
-app: 앱
+app:
 # "service" is the name of this project. This will also be added to your AWS resource names.
-service: 서버
+service:
 
 provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
   iam:
-    role: 'replace iam arn'
+    role: ''
 
 frameworkVersion: '^4'
 plugins:
@@ -22,7 +22,7 @@ functions:
     handler: handler.imageResize
     events:
       - preExistingCloudFront:
-          distributionId: replace your cloudfront id
+          distributionId:
           eventType: origin-response
           pathPattern: '*'
           includeBody: false
