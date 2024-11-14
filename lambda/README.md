@@ -17,8 +17,6 @@ node_modules.zip을 압출 해제한다.
 
 handler.js 파일의 버킷명, serverless.yml 파일의 빈 값을 추가 후 배포
 
-# 람다 배포
-
 ```
 serverless deploy
 ```
